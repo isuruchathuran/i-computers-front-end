@@ -4,7 +4,7 @@ export default function LoginPage(){
     return(
         <div className="w-full h-full bg-[url('/background.jpg')] bg-cover no-repeat bg-center flex justify-center items-center">
             <div className="w-[50%] h-full flex justify-center items-center flex-col">
-                <img src="/logo1.png" alt="Logo" className="w-[600px] h-[600px] object-cover"/>
+                <img src="/logo.png" alt="Logo" className="w-[700px] h-[700px] ml-[120px] mt-[70px] object-cover"/>
                 <h1 className="mt-0 text-4xl font-bold mt-5 text-white"></h1>
             </div>
 
