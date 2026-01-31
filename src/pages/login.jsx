@@ -30,9 +30,8 @@ export default function LoginPage(){
                 }
             }
         ).catch(
-            (error)=>{
-                console.log(error)
-                toast.error("Login Failed..")
+            (err)=>{
+                toast.error(err?.response?.data?.message || "Failed to login");
             }
         )
     }

@@ -1,4 +1,7 @@
-import { useState } from "react"
+import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminAddProductPage(){
 
@@ -12,11 +15,52 @@ export default function AdminAddProductPage(){
     const [ brand , setBrand ] = useState("Standard");
     const [ model , setModel ] = useState("");
     const [ isVisible , setIsVisible ] = useState(true);
+    const navigate = useNavigate();
+
+    async function handleAddProduct(){
+    try{
+
+        const token = localStorage.getItem("token");
+
+        if(token == null){
+            toast.error("You must be logged in to add a product");
+            window.location.href = "/login";
+            return;
+        }
+
+        await axios.post(import.meta.env.VITE_API_URL + "/products",{
+            productId: productId,
+            name: name,
+            description: Description, // ✅ FIXED FIELD NAME
+            price: Number(price),
+            labeledPrice: Number(labelledPrice), // ✅ FIXED FIELD NAME
+            altNames: altNames ? altNames.split(",").map(n => n.trim()) : [],
+            category: category,
+            brand: brand,
+            model: model,
+            isVisible: Boolean(isVisible),
+        },{
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+
+        toast.success("Product added successfully")
+        //redirect to admin/product
+        navigate("/admin/products");
+    }catch(err){
+        //toast.error("Failed to add product");
+        toast.error(err?.response?.data?.message || "Failed to add product");
+        return;
+    }
+}
+
     
 
-
     return(
-        <div className="w-full max-h-full flex flex-wrap">
+        <div className="w-full max-h-full flex flex-wrap items-start overflow-y-scroll hide-scroll-track">
+
+            <h1 className="w-full text-3xl font-bold mb-4 sticky top-0 bg-primary">Add New Product</h1>
             <div className="w-[50%] h-[120px] flex flex-col ">
                 <label className="font-bold ml-2">Product ID</label>
                 <input value={productId} onChange={(e)=>{SetProductId(e.target.value)}} placeholder="Ex: ID001" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
@@ -29,7 +73,7 @@ export default function AdminAddProductPage(){
 
             <div className="w-full h-[170px] flex flex-col ">
                 <label className="font-bold ml-2">Description</label>
-                <textarea value={Description }onChange={(e)=>{setDescription(e.target.value)}} placeholder="Ex: Laptop" className="border-4 border-accent rounded-[10px] h-[100px] p-2 m-2 focus:outline-white"/>
+                <textarea value={Description }onChange={(e)=>{setDescription(e.target.value)}} placeholder="Ex: Laptops are portable computers that can be used for studying, working, browsing the internet, and entertainment. They are easy to carry and suitable for students, professionals, and everyday users." className="border-4 border-accent rounded-[10px] h-[100px] p-2 m-2 focus:outline-white"/>
             </div>
 
             <div className="w-full h-[120px] flex flex-col ">
@@ -39,12 +83,12 @@ export default function AdminAddProductPage(){
 
             <div className="w-[50%] h-[120px] flex flex-col ">
                 <label className="font-bold ml-2">Price</label>
-                <input value={price} onChange={(e)=>{setPrice(e.target.value)}} placeholder="Ex: ID001" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
+                <input value={price} onChange={(e)=>{setPrice(e.target.value)}} placeholder="" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
             </div>
 
             <div className="w-[50%] h-[120px] flex flex-col ">
                 <label className="font-bold ml-2">Labelled Price</label>
-                <input value={labelledPrice} onChange={(e)=>{setLabelledPrice(e.target.value)}} placeholder="Ex: Laptop" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
+                <input value={labelledPrice} onChange={(e)=>{setLabelledPrice(e.target.value)}} placeholder="" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
             </div>
 
             <div className="w-[25%] h-[120px] flex flex-col ">
@@ -84,7 +128,14 @@ export default function AdminAddProductPage(){
                 </select>
             </div>
 
-
+            <div className="w-full h-[80px] bg-white sticky bottom-0 rounded-b-2xl flex justify-end items-center p-4 gap-4">
+                <button className="bg-gray-500 text-white font-bold px-6 py-3 rounded-[10px] hover:bg-gray-600 ml-4">
+                    Cancel
+                </button>
+                <button onClick={ handleAddProduct } className="bg-accent text-white font-bold px-6 py-3 rounded-[10px] hover:bg-secondary">
+                    Add Product
+                </button>  
+            </div>
         </div>
     )
 }
