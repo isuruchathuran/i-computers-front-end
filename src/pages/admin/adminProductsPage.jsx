@@ -75,20 +75,87 @@ const sampleProducts = [
 
 export default function AdminProductsPage(){
 
-    const [ count , setCount ] = useState(0);
+    
     const [ products , setProducts ] = useState(sampleProducts);
 
     return(
         <div className="w-full h-full overflow-y-scroll">
-                {
-                  products.map(
-                      (item , index)=>{
 
-                          return <h1 key={item.productId} >{item.name}</h1>
+          {
+                /*
+                products.map(
+                  (item , index)=>{
+                    return <h1 key={item.productId} >{item.name}</h1>
+                  }
+                )
+                */
+          }
 
-                      }
-                  )
-                }
+                
+<div className="overflow-x-auto rounded-xl shadow-lg border border-[var(--color-primary)] bg-white">
+  <table className="min-w-full text-sm text-[var(--color-secondary)]">
+    
+    <thead>
+      <tr style={{ background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)" }}>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Product ID</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Name</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Price</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Labeled Price</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Category</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Image</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Status</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Brand</th>
+        <th className="px-4 py-3 text-left text-white uppercase text-xs tracking-wide font-semibold">Model</th>
+      </tr>
+    </thead>
+
+    <tbody className="divide-y divide-[var(--color-primary)]">
+      {
+        products.map((item) => {
+          return (
+            <tr 
+              key={item.productId}
+              className="hover:bg-[var(--color-primary)] transition"
+            >
+              <td className="px-4 py-3 font-medium">{item.productId}</td>
+              <td className="px-4 py-3">{item.name}</td>
+              <td className="px-4 py-3 font-semibold text-[var(--color-accent)]">
+                Rs. {item.price}
+              </td>
+              <td className="px-4 py-3 line-through text-gray-400">
+                Rs. {item.labeledPrice}
+              </td>
+              <td className="px-4 py-3 capitalize">{item.category}</td>
+              <td className="px-4 py-3">
+                <img 
+                  src={item.images[0]} 
+                  alt={item.name}
+                  className="w-14 h-14 object-cover rounded-lg border"
+                  loading="lazy"
+                />
+              </td>
+              <td className="px-4 py-3">
+                <span className={`px-3 py-1 text-xs rounded-full font-semibold
+                  ${item.isVisible 
+                    ? "bg-green-100 text-green-700" 
+                    : "bg-red-100 text-red-700"}
+                `}>
+                  {item.isVisible ? "Visible" : "Hidden"}
+                </span>
+              </td>
+              <td className="px-4 py-3">{item.brand}</td>
+              <td className="px-4 py-3">{item.model}</td>
+            </tr>
+          )
+        })
+      }
+    </tbody>
+  </table>
+</div>
+
+
+
+                
             <Link to="/admin/add-product"className="text-white bg-accent w-[50px] h-[50px] flex justify-center items-center text-3xl rounded-[20px] hover:rounded-full fixed bottom-10 right-16">        
                 <FaPlus />
             </Link>
