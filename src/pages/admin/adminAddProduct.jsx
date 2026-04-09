@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import uploadFile from "../../utils/mediaUpload";
 
-export default function AdminAddProductPage(){
+export default function AdminAddProductPage() {
 
     const [ productId , SetProductId ] = useState("");
     const [ name , setName ] = useState("");
@@ -75,7 +75,11 @@ export default function AdminAddProductPage(){
     return(
         <div className="w-full max-h-full flex flex-wrap items-start overflow-y-scroll hide-scroll-track">
 
-            <h1 className="w-full text-3xl font-bold mb-4 sticky top-0 bg-primary">Add New Product</h1>
+            <h1 className="w-full text-3xl font-bold mb-4 sticky top-0 text-white p-3 rounded-lg"
+                style={{ background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)" }}>
+                    Add New Product
+            </h1>
+            
             <div className="w-[50%] h-[120px] flex flex-col ">
                 <label className="font-bold ml-2">Product ID</label>
                 <input value={productId} onChange={(e)=>{SetProductId(e.target.value)}} placeholder="Ex: ID001" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
@@ -91,10 +95,31 @@ export default function AdminAddProductPage(){
                 <textarea value={Description }onChange={(e)=>{setDescription(e.target.value)}} placeholder="Ex: Laptops are portable computers that can be used for studying, working, browsing the internet, and entertainment. They are easy to carry and suitable for students, professionals, and everyday users." className="border-4 border-accent rounded-[10px] h-[100px] p-2 m-2 focus:outline-white"/>
             </div>
 
-            <div className="w-full h-[120px] flex flex-col ">
-                <label className="font-bold ml-2">Images</label>
-                <input multiple type="file" onChange={(e)=>{setFiles(e.target.files)}} placeholder="Ex: Laptop, Notebook, Portable Computer" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:outline-white"/>
+                        <div className="w-full h-[140px] flex flex-col justify-center">
+            <label className="font-bold ml-2 mb-1">Images</label>
+
+            <label className="border-2 border-dashed border-accent rounded-xl h-[90px] m-2 flex flex-col justify-center items-center cursor-pointer hover:bg-accent/10 transition">
+                
+                <span className="text-gray-600 text-sm">
+                Click or Drag & Drop Images Here
+                </span>
+
+                <span className="text-xs text-gray-400 mt-1">
+                (You can select multiple files)
+                </span>
+
+                <input
+                multiple
+                type="file"
+                onChange={(e) => {
+                    setFiles(e.target.files);
+                }}
+                className="hidden"
+                />
+
+            </label>
             </div>
+
 
             <div className="w-full h-[120px] flex flex-col ">
                 <label className="font-bold ml-2">Alternative Names (Comma separated)</label>

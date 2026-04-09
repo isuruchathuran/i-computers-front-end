@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 export default function App() {
   return (
     <div className="w-full h-screen bg-primary text-secondary">
-      <Toaster position="top-right"/>
+      <Toaster position="top-center"/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/admin/*" element={<AdminPage />} />

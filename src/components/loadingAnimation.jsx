@@ -1,7 +1,3 @@
-import { useState } from "react"
-import uploadFile from "../utils/mediaUpload"
-
-
 export default function LoadingAnimation() {
   return (
     <div className="flex flex-col items-center gap-3">
@@ -12,3 +8,5 @@ export default function LoadingAnimation() {
     </div>
   );
 }
+
+
