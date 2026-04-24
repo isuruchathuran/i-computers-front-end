@@ -1,12 +1,40 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import LoadingAnimation from "../components/loadingAnimation";
+import ImageSlideShow from "../components/imageSlideShow";
 
 export default function Overview(){
     const params = useParams();
     console.log(params)
 
+    //fetch product details using params. Productid and display them her
+    const [ product , setProduct ] = useState(null);
+
+    
+    useEffect(
+        ()=>{
+            axios.get( import.meta.env.VITE_API_URL + "/products/" + params.productId )
+        .then(
+            (response)=>{
+                setProduct(response.data);
+            });
+        }, []);
+
+
     return(
-        <div className="w-full min-h-screen flex justify-center items-center">
-            <h1 className="text-3xl font-bold">Product Overview Page of {params.productId}</h1>
+        <div className="w-full h-[calc(100vh-100px)] flex justify-center items-center">
+            {
+                product==null?<LoadingAnimation/>:
+                <div className="w-full h-full flex">
+                    <div className="w-[50%] h-full">
+                      <ImageSlideShow images={product.images}/>  
+                    </div>
+                    
+                    <div className="w-[50%] h-full">
+                    </div>
+                </div>
+            }
         </div>
     )
         

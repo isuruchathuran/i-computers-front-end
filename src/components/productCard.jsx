@@ -5,7 +5,7 @@ export default function ProductCard(props) {
     const product = props.product;
 
     return (
-        <Link to={"/overview/"+product.productId} className="w-[300px] h-[400px] m-4 rounded-lg shadow-lg bg-white overflow-hidden hover:[&_.main-image]:opacity-0 relative">
+        <Link to={"/overview/"+product.productId} className="w-[300px] h-[400px]  m-4 rounded-lg shadow-lg bg-white overflow-hidden hover:[&_.main-image]:opacity-0 relative">
 
             <div className="bg-white absolute top-0 left-0 w-full">
                 <img src={product.images[1]} alt={product.name} className="h-[250px] w-full object-fit" />

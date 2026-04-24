@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Header(){
     return(
         <header 
-            className="w-full bg-accent h-[100px] flex justify-center items-center relative"
+            className="w-full sticky top-0 bg-accent h-[100px] flex justify-center items-center relative"
             style={{
                 background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)"
             }}
