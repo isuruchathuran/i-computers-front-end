@@ -1,11 +1,17 @@
 import { useState } from "react"
-import { addToCart, getCart, getCartTotal } from "../utils/cart"
+import {  getCartTotal } from "../utils/cart"
 import { BiMinus, BiPlus } from "react-icons/bi"
 import getFormattedPrice from "../utils/price-format"
-import { Link } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
-export default function Cart(){
-    const [cart , setCart] = useState(getCart())
+export default function Checkout(){
+    const location = useLocation();
+    const [cart , setCart] = useState(location.state || [])
+    const navigate = useNavigate();
+
+    if(location.state == null){
+        navigate("/products")
+    }
     return(
         <div className="w-full h-[calc(100vh-100px)] overflow-y-scroll">
             <div className="w-full flex justify-center items-center flex-col gap-4 p-5">
@@ -20,8 +26,17 @@ export default function Cart(){
                                 <div className="w-[200px] h-[50px] border border-accent rounded-full flex overflow-hidden ">
                                     <button onClick={
                                         ()=>{
-                                            addToCart(cartItem.product , -1)
-                                            setCart(getCart())
+                                            
+                                            const newCart = [...cart]
+
+                                            newCart[index].qty = newCart[index].qty - 1
+                                            if(newCart[index].qty<=0){
+                                                
+                                                    newCart.splice(index,1)
+
+                                            }
+                                            setCart(newCart)
+
                                         }
                                     } className="w-[70px] h-full flex justify-center items-center text-2xl font-bold text-gray-700 hover:bg-accent">
                                         <BiMinus/>
@@ -33,8 +48,11 @@ export default function Cart(){
 
                                     <button onClick={
                                         ()=>{
-                                            addToCart(cartItem.product , 1)
-                                            setCart(getCart())
+                                            
+                                            const newCart = [...cart]
+                                            newCart[index].qty = newCart[index].qty + 1
+                                            setCart(newCart)
+
                                         }
                                     } className="w-[70px] h-full flex justify-center items-center text-2xl font-bold text-gray-700 hover:bg-accent">
                                         <BiPlus/>
@@ -56,7 +74,7 @@ export default function Cart(){
                 })
                 }
                 <div className="bg-gradient-to-r from-blue-300 via-cyan-200 to-purple-300 w-[600px] h-[100px] sticky bottom-0 rounded-xl shadow flex items-center">
-                    <Link state={cart} to="/checkout" className="bg-accent text-white px-4 py-2 rounded ml-5 hover:bg-blue-600">Checkout</Link>
+                    <button className="bg-accent text-white px-4 py-2 rounded ml-5 hover:bg-blue-600">Buy now</button>
                     <span className="text-xl font-bold text-secondary absolute right-5 border-b-4  border-double">{getFormattedPrice(getCartTotal(cart))}</span>
                 </div>
             </div>

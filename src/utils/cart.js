@@ -49,7 +49,7 @@ export function addToCart(product , qty){
                 product : {
                     productId : product.productId,
                     name : product.name,
-                    labelledPrice : product.labelledPrice,
+                    labeledPrice : product.labeledPrice,
                     price : product.price,
                     image : product.images[0]
                 },
@@ -76,3 +76,23 @@ export function addToCart(product , qty){
     localStorage.setItem("cart", cartString);
 
 }
+
+//Sum of all cart price
+export function getCartTotal(cart){
+    
+    
+    let total = 0;
+
+    cart.forEach(
+        (cartItem)=>{
+            // total = total + cartItem.product.price * cartItem.qty
+            total += cartItem.product.price * cartItem.qty
+        }
+    )
+
+    return total
+
+}
+
+
+
