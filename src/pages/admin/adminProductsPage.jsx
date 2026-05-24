@@ -43,6 +43,9 @@ export default function AdminProductsPage() {
         }}
       >
         Products
+        <p className="text-blue-50 mt-3 text-sm leading-6">
+          View, organize, and manage your complete product inventory with ease.
+        </p>
       </h1>
 
       <div className="overflow-x-auto rounded-xl shadow-lg border border-[var(--color-primary)] bg-white">
@@ -112,7 +115,7 @@ export default function AdminProductsPage() {
                       })}
                     </td>
 
-                    <td className="px-4 py-3 line-through text-gray-400">
+                    <td className="px-4 py-3 line-through text-red-500">
                       LKR{" "}
                       {Number(item.labeledPrice).toLocaleString("en-LK", {
                         minimumFractionDigits: 2,
