@@ -9,7 +9,7 @@ export default function AdminUpdateProductPage() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // ✅ SAFE state
+    
     const state = location.state || {};
 
     const [productId, setProductId] = useState(state.productId || "");
@@ -34,7 +34,7 @@ export default function AdminUpdateProductPage() {
                 return;
             }
 
-            // ✅ upload images
+           
             const fileUploadPromises = Array.from(files).map(file => uploadFile(file));
             let imageURLs = await Promise.all(fileUploadPromises);
 
@@ -74,31 +74,31 @@ export default function AdminUpdateProductPage() {
     return (
         <div className="w-full max-h-full flex flex-wrap items-start overflow-y-scroll hide-scroll-track">
 
-            {/* Header */}
+            
             <h1 className="w-full text-3xl font-bold mb-4 sticky top-0 text-white p-3 rounded-lg"
                 style={{ background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)" }}>
                 Edit Product
             </h1>
 
-            {/* Product ID */}
+            
             <div className="w-[50%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Product ID</label>
                 <input value={productId} disabled className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* Name */}
+           
             <div className="w-[50%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Product Name</label>
                 <input value={name} onChange={(e) => setName(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* Description */}
+            
             <div className="w-full h-[170px] flex flex-col">
                 <label className="font-bold ml-2">Description</label>
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="border-4 border-accent rounded-[10px] h-[100px] p-2 m-2" />
             </div>
 
-            {/* Images */}
+            
             <div className="w-full h-[140px] flex flex-col justify-center">
                 <label className="font-bold ml-2 mb-1">Images</label>
 
@@ -115,25 +115,25 @@ export default function AdminUpdateProductPage() {
                 </label>
             </div>
 
-            {/* Alt Names */}
+            
             <div className="w-full h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Alternative Names</label>
                 <input value={altNames} onChange={(e) => setAltNames(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* Price */}
+            
             <div className="w-[50%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Price</label>
                 <input value={price} onChange={(e) => setPrice(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* Label Price */}
+            
             <div className="w-[50%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Labelled Price</label>
                 <input value={labelledPrice} onChange={(e) => setLabelledPrice(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* Category */}
+            
             <div className="w-[25%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Categories</label>
                 <select value={category} onChange={(e) => setCategory(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2">
@@ -145,7 +145,7 @@ export default function AdminUpdateProductPage() {
                 </select>
             </div>
 
-            {/* Brand */}
+            
             <div className="w-[25%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Brand</label>
                 <select value={brand} onChange={(e) => setBrand(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2">
@@ -159,13 +159,13 @@ export default function AdminUpdateProductPage() {
                 </select>
             </div>
 
-            {/* Model */}
+            
             <div className="w-[25%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Model</label>
                 <input value={model} onChange={(e) => setModel(e.target.value)} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2" />
             </div>
 
-            {/* ✅ FIXED isVisible */}
+            
             <div className="w-[25%] h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Is Visible</label>
                 <select
@@ -178,7 +178,7 @@ export default function AdminUpdateProductPage() {
                 </select>
             </div>
 
-            {/* Buttons */}
+            
             <div className="w-full h-[80px] bg-white sticky bottom-0 rounded-b-2xl flex justify-end items-center p-4 gap-4">
                 <button
                     onClick={() => navigate("/admin/products")}

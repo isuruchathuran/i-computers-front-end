@@ -2,37 +2,12 @@ import { useState } from "react";
 import getFormattedDate from "../utils/date-format";
 import getFormattedPrice from "../utils/price-format";
 import { CgClose } from "react-icons/cg";
-import axios from "axios";
-import toast from "react-hot-toast";
 
-export default function ViewOrderInfoModal(props) {
+
+export default function CustomersViewOrderInfoModal(props) {
 
     const [isVisible, setIsVisible] = useState(false);
     const order = props.order;
-
-    const [status, setStatus] = useState(order.status);
-    const [notes, setNotes] = useState(order.notes);
-
-    async function handleChange() {
-        try {
-            const token = localStorage.getItem("token")
-            await axios.put(import.meta.env.VITE_API_URL + "/orders/" + order.orderId, {
-                status: status,
-                notes : notes
-            }, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            })
-
-            toast.success("Order updated successfully.")
-            window.location.reload()
-
-
-        }catch{
-            toast.error("Failed to update order.")
-        }
-    }
 
     return (
         <>
@@ -117,16 +92,7 @@ export default function ViewOrderInfoModal(props) {
                                                 {status}
                                             </span>
 
-                                            <select
-                                                value={status}
-                                                onChange={(e) => setStatus(e.target.value)}
-                                                className="bg-white text-gray-800 border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                                            >
-                                                <option value="Pending">Pending</option>
-                                                <option value="Shipped">Shipped</option>
-                                                <option value="Delivered">Delivered</option>
-                                                <option value="Cancelled">Cancelled</option>
-                                            </select>
+                                            
 
                                         </div>
                                     </div>
@@ -136,13 +102,8 @@ export default function ViewOrderInfoModal(props) {
                                             Admin Notes
                                         </p>
 
+                                        <p>{order.notes}</p>
 
-                                        <textarea
-                                            value={notes}
-                                            onChange={(e) => setNotes(e.target.value)}
-                                            placeholder="Add order notes here..."
-                                            className="w-full h-20 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md p-4 text-sm text-white placeholder:text-gray-200 resize-none outline-none focus:ring-2 focus:ring-white shadow-inner"
-                                        />
                                     </div>
 
                                 </div>
@@ -207,19 +168,7 @@ export default function ViewOrderInfoModal(props) {
 
                             </div>
 
-                            {/* BUTTON */}
-                            <div className="sticky bottom-0 mt-6 bg-gray-50 pt-4 border-t border-gray-200">
-
-                                {
-
-                                    (order.status != status || order.notes != notes) &&
-                                    <button onClick={handleChange} className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all duration-200">
-                                        Save Changes
-                                    </button>
-
-                                }
-
-                            </div>
+                            
 
                         </div>
 

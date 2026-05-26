@@ -3,35 +3,40 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function LoginPage(){
+export default function RegisterPage() {
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("")
     const navigate = useNavigate()
 
-    function Login(){
+    function signup() {
+        if (password != confirmPassword) {
+            toast.error("Passwords do not match")
+            return
+        }
+
         console.log(email)
         console.log(password)
-        axios.post(import.meta.env.VITE_API_URL + "/users/login",
+        axios.post(import.meta.env.VITE_API_URL + "/users/",
             {
+                firstName: firstName,
+                lastName : lastName,
                 email : email,
                 password : password
             }
         ).then(
             (response)=>{
                 console.log(response)
-                toast.success("Login Successful !")
+                toast.success("Signed up Successfully !")
                 
-                localStorage.setItem("token", response.data.token)
-
-                if(response.data.role == "admin"){
-                    navigate("/admin/")
-                }else{
-                    navigate("/")
-                }
+                navigate("/login")
+                
             }
         ).catch(
             (err)=>{
-                toast.error(err?.response?.data?.message || "Failed to login");
+                toast.error(err?.response?.data?.message || "Failed to sign up");
             }
         )
     }
@@ -50,6 +55,33 @@ export default function LoginPage(){
             <div className="w-[50%] h-ful flex justify-center items-center">
 
                 <div className="backdrop-blur-md w-[450px] h-[600px] shadow-2xl rounded-lg flex flex-col justify-center">
+
+                    <div className="w-full h-[50px] flex items-center justify-between px-5">
+                        <input
+                            value={firstName}
+                            onChange={
+                                (e) => {
+                                    setFirstName(e.target.value)
+                                }
+                            }
+                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none"
+                            type="text"
+                            placeholder="First Name"
+                        />
+
+                        <input
+                            value={lastName}
+                            onChange={
+                                (e) => {
+                                    setLastName(e.target.value)
+                                }
+                            }
+                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none"
+                            type="text"
+                            placeholder="Last Name"
+                        />
+                    </div>
+                
                     <input 
                         type="email" 
                         placeholder="Email" 
@@ -72,28 +104,34 @@ export default function LoginPage(){
                         }       
                     />
 
-                    <p className="w-full text-right pr-5">
-                        Forgot Password? {" "}
-                        <Link to="/forgot-password" className="text-accent">
-                            Reset
-                        </Link>
-                    </p>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none"
+                        onChange={
+                            (e) => {
+                                setConfirmPassword(e.target.value)
+                            }
+                        }
+                    />
 
-                    <button onClick={Login}
+                    
+
+                    <button onClick={signup}
                         className="m-5 p-3 w-[90%] h-[50px] bg-accent rounded-lg text-white font-bold">
-                            Login
+                            sign up
                         </button>
 
                     <button 
                         className="m-5 p-3 w-[90%] h-[50px] border border-accent rounded-lg text-white font-bold">
-                            Login with Google
+                            Sign up with Google
                     </button>
 
                     <p 
                         className="w-full text-right pr-5">
-                            Don't have an account? {" "}
+                            Already have an account? {" "}
                                 <Link to="/register" className="text-accent">
-                                    Sign up
+                                    Login
                                 </Link>
                     </p>
                     

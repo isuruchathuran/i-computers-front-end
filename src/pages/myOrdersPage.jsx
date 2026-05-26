@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
-import LoadingAnimation from "../../components/loadingAnimation";
-import getFormattedPrice from "../../utils/price-format";
-import getFormattedDate from "../../utils/date-format";
-import toast from "react-hot-toast";
-import ViewOrderInfoModal from "../../components/viewOrderinfoModal";
 
-export default function AdminOrdersPage() {
+import toast from "react-hot-toast";
+import CustomersViewOrderInfoModal from "../components/CustomersviewOrderInfoModal";
+import LoadingAnimation from "../components/loadingAnimation";
+import getFormattedDate from "../utils/date-format";
+import getFormattedPrice from "../utils/price-format";
+
+export default function MyOrdersPage() {
 
     const [orders, setOrders] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
@@ -39,31 +40,21 @@ export default function AdminOrdersPage() {
     )
 
     return (
-        <div className="w-full h-full overflow-y-auto hide-scroll-track relative">
+        <div className="w-full h-full overflow-y-auto hide-scroll-track relative ">
 
-            {/* HEADER */}
-            <h1
-                className="w-full text-3xl font-bold mb-4 sticky top-0 text-white p-3 rounded-lg z-10"
-                style={{
-                    background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)",
-                }}
-            >
-                Orders
-                <p className="text-blue-50 mt-3 text-sm leading-6">
-                    View and manage all customer orders with ease.
-                </p>
-            </h1>
+            
+            
 
-            {/* TABLE CONTAINER */}
+            
             <div className="overflow-x-auto rounded-xl shadow-lg border border-[var(--color-primary)] bg-white relative pb-[80px]">
 
-                {/* LOADING */}
+                
                 {!isLoaded ? (
                     <div className="w-full min-h-[300px] flex justify-center items-center bg-white">
                         <LoadingAnimation />
                     </div>
                 ) : (
-                    <table className="min-w-full text-sm text-[var(--color-secondary)]">
+                    <table className="min-w-full text-sm text-[var(--color-secondary)] ">
 
                         <thead>
                             <tr style={{
@@ -107,7 +98,7 @@ export default function AdminOrdersPage() {
                                     </td>
 
                                     <td className="px-4 py-3">
-                                        <ViewOrderInfoModal order={order} />
+                                        <CustomersViewOrderInfoModal order={order} />
                                     </td>
 
                                 </tr>
@@ -118,8 +109,8 @@ export default function AdminOrdersPage() {
                     </table>
                 )}
 
-                {/* FOOTER (PAGINATION AREA) */}
-                <div className="w-full h-[70px] flex justify-center items-center absolute bottom-0 left-0 backdrop-blur-md border-t border-white/10">
+                
+                <div className="w-full h-[70px] flex justify-center items-center fixed bottom-0 left-0 backdrop-blur-md border-t border-white/10">
 
                     <div className="w-[500px] h-[70px] bg-secondary shadow-xl rounded-2xl flex items-center justify-center px-4 gap-7 justify-between px-2 ">
 
@@ -162,10 +153,9 @@ export default function AdminOrdersPage() {
                             }}
                             className="ml-5 border border-gray-300 rounded-full px-4 py-2 text-sm
                bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400
-               hover:border-blue-400 transition fixed"
+               hover:border-blue-400 transition"
                         >
-                            {/* <option value={2}>2 per page</option>
-                            <option value={5}>5 per page</option> */}
+                            
                             <option value={10}>10 per page</option>
                             <option value={20}>20 per page</option>
                             <option value={50}>50 per page</option>
