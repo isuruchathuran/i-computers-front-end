@@ -10,26 +10,6 @@ export function getCart(){
     }
 }
 
-const sampleCart = [
-    {
-        product : {
-            productId : "12345",
-            name : "product 1",
-            labeledPrice : 1000,
-            Image : "https://via.placeholder.com/150",
-        },
-        qty : 2,
-    },
-    {
-        product : {
-            productId : "67890",
-            name : "product 2",
-            labeledPrice : 2000,
-            Image : "https://via.placeholder.com/150", 
-    },
-        qty : 1
-    },
-];
 
 export function addToCart(product , qty){
     const cart = getCart();

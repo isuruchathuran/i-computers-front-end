@@ -33,7 +33,13 @@ export default function CheckoutDetailsModal(props) {
                 console.log(response.data)
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
-            })
+            }
+        ).catch(
+            () => {
+                localStorage.removeItem("token")
+                window.location.href = "/login"
+            }
+        )
     }, []);
 
     const cart = props.cart;

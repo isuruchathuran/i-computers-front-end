@@ -18,7 +18,7 @@ export default function ViewOrderInfoModal(props) {
             const token = localStorage.getItem("token")
             await axios.put(import.meta.env.VITE_API_URL + "/orders/" + order.orderId, {
                 status: status,
-                notes : notes
+                notes: notes
             }, {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -29,7 +29,7 @@ export default function ViewOrderInfoModal(props) {
             window.location.reload()
 
 
-        }catch{
+        } catch {
             toast.error("Failed to update order.")
         }
     }
@@ -180,8 +180,8 @@ export default function ViewOrderInfoModal(props) {
                                         <div className="flex items-center gap-4">
 
                                             <img
-                                                src={item.images}
-                                                alt={item.name}
+                                                src={item.image}
+                                                alt={item.image}
                                                 className="w-16 h-16 rounded-lg object-cover border"
                                             />
 

@@ -92,7 +92,7 @@ export default function CustomersViewOrderInfoModal(props) {
                                                 {status}
                                             </span>
 
-                                            
+
 
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@ export default function CustomersViewOrderInfoModal(props) {
                                         <div className="flex items-center gap-4">
 
                                             <img
-                                                src={item.images}
+                                                src={item.image}
                                                 alt={item.name}
                                                 className="w-16 h-16 rounded-lg object-cover border"
                                             />
@@ -168,7 +168,7 @@ export default function CustomersViewOrderInfoModal(props) {
 
                             </div>
 
-                            
+
 
                         </div>
 

@@ -21,6 +21,11 @@ export default function UserData() {
                         console.log(response.data)
                         setUser(response.data)
                      }
+                ).catch(
+                    () => {
+                        localStorage.removeItem("token")
+                        window.location.href = "/login"
+                    }
                 )
             }
         },[]
