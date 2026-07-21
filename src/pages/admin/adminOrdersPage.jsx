@@ -127,7 +127,7 @@ export default function AdminOrdersPage() {
                             onClick={() => {
                                 if (pageNumber > 1) {
                                     setPageNumber(pageNumber - 1);
-                                    setIsLoaded(true);
+                                    setIsLoaded(false);
                                 } else {
                                     toast.success("You are on the First Page");
                                 }
@@ -144,7 +144,7 @@ export default function AdminOrdersPage() {
                             onClick={() => {
                                 if (pageNumber < totalPages) {
                                     setPageNumber(pageNumber + 1);
-                                    setIsLoaded(true);
+                                    setIsLoaded(false);
                                 } else {
                                     toast.success("You are on the Last Page");
                                 }

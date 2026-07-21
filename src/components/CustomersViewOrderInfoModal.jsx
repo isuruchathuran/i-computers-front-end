@@ -84,12 +84,12 @@ export default function CustomersViewOrderInfoModal(props) {
 
                                             <span className={`
                                                 px-4 py-1 rounded-full text-sm font-semibold shadow-sm
-                                                ${status === "Processing" && "bg-yellow-400 text-black"}
-                                                ${status === "Shipped" && "bg-blue-500 text-white"}
-                                                ${status === "Delivered" && "bg-green-500 text-white"}
-                                                ${status === "Cancelled" && "bg-red-500 text-white"}
+                                                ${order.status === "Processing" && "bg-yellow-400 text-black"}
+                                                ${order.status === "Shipped" && "bg-blue-500 text-white"}
+                                                ${order.status === "Delivered" && "bg-green-500 text-white"}
+                                                ${order.status === "Cancelled" && "bg-red-500 text-white"}
                                             `}>
-                                                {status}
+                                                {order.status}
                                             </span>
 
 

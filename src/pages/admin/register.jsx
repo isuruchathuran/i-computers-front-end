@@ -9,16 +9,21 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
 
     function signup() {
+        if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+            toast.error("Please fill in all fields");
+            return;
+        }
+
         if (password != confirmPassword) {
             toast.error("Passwords do not match")
             return
         }
 
-        console.log(email)
-        console.log(password)
+        setIsLoading(true);
         axios.post(import.meta.env.VITE_API_URL + "/users/",
             {
                 firstName: firstName,
@@ -28,22 +33,17 @@ export default function RegisterPage() {
             }
         ).then(
             (response)=>{
-                console.log(response)
                 toast.success("Signed up Successfully !")
-                
                 navigate("/login")
-                
             }
         ).catch(
             (err)=>{
-                toast.error(err?.response?.data?.message || "Failed to sign up");
+                toast.error(err?.response?.data?.message || "Failed to sign up. Please try again later.");
             }
-        )
+        ).finally(() => {
+            setIsLoading(false);
+        })
     }
-
-
-        
-      
 
     return(
         <div className="w-full h-full bg-[url('/background.jpg')] bg-cover no-repeat bg-center flex justify-center items-center">
@@ -59,24 +59,16 @@ export default function RegisterPage() {
                     <div className="w-full h-[50px] flex items-center justify-between px-5">
                         <input
                             value={firstName}
-                            onChange={
-                                (e) => {
-                                    setFirstName(e.target.value)
-                                }
-                            }
-                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none"
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none text-gray-800"
                             type="text"
                             placeholder="First Name"
                         />
 
                         <input
                             value={lastName}
-                            onChange={
-                                (e) => {
-                                    setLastName(e.target.value)
-                                }
-                            }
-                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none"
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="w-[48%] p-3 h-[50px] rounded-lg border border-secondary outline-none text-gray-800"
                             type="text"
                             placeholder="Last Name"
                         />
@@ -85,54 +77,42 @@ export default function RegisterPage() {
                     <input 
                         type="email" 
                         placeholder="Email" 
-                        onChange={
-                            (e)=>{
-                                setEmail(e.target.value)
-                            }
-                        }
-                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none"
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
+                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none text-gray-800"
                     />
 
                     <input 
                         type="password" 
                         placeholder="Password" 
-                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none"
-                        onChange={
-                            (e)=>{
-                                setPassword(e.target.value)
-                            }
-                        }       
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
+                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none text-gray-800"
                     />
 
                     <input
                         type="password"
-                        placeholder="Password"
-                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none"
-                        onChange={
-                            (e) => {
-                                setConfirmPassword(e.target.value)
-                            }
-                        }
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="m-5 p-3 w-[90%] h-[50px] rounded-lg border border-secondary outline-none text-gray-800"
                     />
 
-                    
-
-                    <button onClick={signup}
-                        className="m-5 p-3 w-[90%] h-[50px] bg-accent rounded-lg text-white font-bold">
-                            sign up
+                    <button onClick={signup} disabled={isLoading}
+                        className="m-5 p-3 w-[90%] h-[50px] bg-accent rounded-lg text-white font-bold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isLoading ? "Signing up..." : "Sign up"}
                         </button>
 
                     <button 
-                        className="m-5 p-3 w-[90%] h-[50px] border border-accent rounded-lg text-white font-bold">
+                        className="m-5 p-3 w-[90%] h-[50px] border border-accent rounded-lg text-white font-bold hover:bg-white hover:text-accent transition-colors">
                             Sign up with Google
                     </button>
 
-                    <p 
-                        className="w-full text-right pr-5">
-                            Already have an account? {" "}
-                                <Link to="/register" className="text-accent">
-                                    Login
-                                </Link>
+                    <p className="w-full text-center mt-4 text-white">
+                        Already have an account? {" "}
+                        <Link to="/login" className="text-accent hover:underline font-bold">
+                            Login
+                        </Link>
                     </p>
                     
                 </div> 
