@@ -110,9 +110,9 @@ export default function CheckoutDetailsModal(props) {
                 Buy now
             </button>
 
-            {isVisible && <div className="w-full h-full bg-black/50 fixed z-50 top-0 left-0 flex justify-center items-center">
+            {isVisible && <div className="w-full h-full bg-black/80 backdrop-blur-sm fixed z-[9999] top-0 left-0 flex justify-center items-center px-4 overflow-hidden text-left">
                 
-                <div className="w-[430px] bg-white rounded-3xl shadow-2xl p-7 relative overflow-hidden">
+                <div className="w-[480px] max-w-full bg-white rounded-3xl shadow-2xl p-8 relative flex flex-col max-h-[90vh]">
 
                     
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400"></div>
@@ -143,7 +143,7 @@ export default function CheckoutDetailsModal(props) {
                     </div>
 
                     
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 overflow-y-auto hide-scroll-track pr-2 pb-4">
 
                         
                         <div className="flex gap-3">

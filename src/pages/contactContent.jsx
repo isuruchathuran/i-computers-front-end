@@ -1,163 +1,235 @@
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock, FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 export default function ContactContent() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Simulate form submission
+
+        // Validation
+        if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
+            Swal.fire({
+                title: "Validation Error",
+                text: "Please fill in all fields before submitting.",
+                icon: "warning",
+                background: '#1f2937',
+                color: '#fff',
+                confirmButtonColor: '#0ea5e9'
+            });
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            Swal.fire({
+                title: "Invalid Email",
+                text: "Please enter a valid email address.",
+                icon: "error",
+                background: '#1f2937',
+                color: '#fff',
+                confirmButtonColor: '#ef4444'
+            });
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        // Simulate API call
         setTimeout(() => {
-            toast.success("Message sent successfully! We will get back to you soon.");
-            e.target.reset();
-        }, 800);
+            setIsSubmitting(false);
+            setFormData({ name: '', email: '', subject: '', message: '' });
+            
+            Swal.fire({
+                title: "Message Sent!",
+                text: "Thank you for contacting us. We will get back to you shortly.",
+                icon: "success",
+                background: '#1f2937',
+                color: '#fff',
+                confirmButtonColor: '#10b981'
+            });
+        }, 1500);
     };
 
     return (
-        <div className="w-full bg-gray-50 min-h-screen">
-            {/* Hero Section */}
-            <section className="w-full py-16 px-4 text-center text-white" style={{ background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #a18cd1 100%)" }}>
-                <div className="container mx-auto">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-                    <p className="text-lg max-w-2xl mx-auto opacity-90">
-                        Have a question about a product, need technical support, or want to partner with us? We're here to help!
-                    </p>
+        <div className="w-full bg-[#0b0f19] text-white min-h-[calc(100vh-80px)]">
+            
+            {/* Header */}
+            <div className="py-16 text-center border-b border-[#1f2937] bg-[#111827] relative overflow-hidden">
+                <div className="absolute top-[-50%] left-1/2 -translate-x-1/2 w-[50%] h-[200%] bg-[#0ea5e9]/10 blur-[120px] rounded-full z-0 pointer-events-none"></div>
+                <div className="relative z-10">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact <span className="text-[#0ea5e9]">Us</span></h1>
+                    <p className="text-gray-400 max-w-2xl mx-auto">Have a question about our products or need technical support? We're here to help.</p>
                 </div>
-            </section>
+            </div>
 
-            <div className="container mx-auto px-4 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 -mt-16 z-10 relative">
+            <div className="container mx-auto px-4 py-16 max-w-7xl">
+                <div className="grid lg:grid-cols-3 gap-12">
                     
-                    {/* Contact Info Cards */}
-                    <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-white p-6 rounded-xl shadow-md flex items-start gap-4">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                                <FaMapMarkerAlt size={20} />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-secondary text-lg mb-1">Our Location</h3>
-                                <p className="text-gray-600">123 Main Street,<br />Colombo 03,<br />Sri Lanka</p>
+                    {/* Contact Info (Left Column) */}
+                    <div className="lg:col-span-1 space-y-8">
+                        <div>
+                            <h3 className="text-2xl font-bold mb-6 text-white border-b border-[#1f2937] pb-4">Get in Touch</h3>
+                            
+                            <div className="space-y-6">
+                                <div className="flex items-start gap-4 group">
+                                    <div className="w-12 h-12 rounded-lg bg-[#1f2937] flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-colors shrink-0">
+                                        <FaMapMarkerAlt size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-200">Our Address</h4>
+                                        <p className="text-gray-400 text-sm mt-1">123 Tech Avenue, Silicon Valley<br/>Colombo 00300, Sri Lanka</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-start gap-4 group">
+                                    <div className="w-12 h-12 rounded-lg bg-[#1f2937] flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-colors shrink-0">
+                                        <FaPhoneAlt size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-200">Phone Number</h4>
+                                        <p className="text-gray-400 text-sm mt-1">+94 112 345 678<br/>+94 777 123 456</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4 group">
+                                    <div className="w-12 h-12 rounded-lg bg-[#1f2937] flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-colors shrink-0">
+                                        <FaEnvelope size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-200">Email Address</h4>
+                                        <p className="text-gray-400 text-sm mt-1">support@isurucomputers.com<br/>sales@isurucomputers.com</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4 group">
+                                    <div className="w-12 h-12 rounded-lg bg-[#1f2937] flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-colors shrink-0">
+                                        <FaClock size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-200">Business Hours</h4>
+                                        <p className="text-gray-400 text-sm mt-1">Mon - Sat: 9:00 AM - 7:00 PM<br/>Sunday: Closed</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="bg-white p-6 rounded-xl shadow-md flex items-start gap-4">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                                <FaPhoneAlt size={20} />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-secondary text-lg mb-1">Call Us</h3>
-                                <p className="text-gray-600">+94 11 234 5678</p>
-                                <p className="text-gray-600">+94 77 123 4567</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-6 rounded-xl shadow-md flex items-start gap-4">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                                <FaEnvelope size={20} />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-secondary text-lg mb-1">Email Us</h3>
-                                <p className="text-gray-600">info@isurucomputers.lk</p>
-                                <p className="text-gray-600">support@isurucomputers.lk</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-6 rounded-xl shadow-md flex items-start gap-4">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                                <FaClock size={20} />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-secondary text-lg mb-1">Business Hours</h3>
-                                <p className="text-gray-600">Mon - Sat: 9:00 AM - 6:00 PM</p>
-                                <p className="text-gray-600">Sunday & Public Holidays: Closed</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-6 rounded-xl shadow-md">
-                            <h3 className="font-bold text-secondary text-lg mb-4 text-center">Follow Us</h3>
-                            <div className="flex justify-center gap-4">
-                                <a href="#" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-accent hover:text-white transition-colors">
-                                    <FaFacebook size={18} />
-                                </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-accent hover:text-white transition-colors">
-                                    <FaInstagram size={18} />
-                                </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-accent hover:text-white transition-colors">
-                                    <FaTwitter size={18} />
-                                </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-accent hover:text-white transition-colors">
-                                    <FaLinkedin size={18} />
-                                </a>
+                        <div>
+                            <h4 className="font-bold text-gray-200 mb-4">Follow Us</h4>
+                            <div className="flex gap-4">
+                                <a href="#" className="w-10 h-10 rounded-full bg-[#1f2937] flex items-center justify-center text-gray-400 hover:bg-[#0ea5e9] hover:text-white transition-all hover:-translate-y-1"><FaFacebookF /></a>
+                                <a href="#" className="w-10 h-10 rounded-full bg-[#1f2937] flex items-center justify-center text-gray-400 hover:bg-[#0ea5e9] hover:text-white transition-all hover:-translate-y-1"><FaTwitter /></a>
+                                <a href="#" className="w-10 h-10 rounded-full bg-[#1f2937] flex items-center justify-center text-gray-400 hover:bg-[#0ea5e9] hover:text-white transition-all hover:-translate-y-1"><FaInstagram /></a>
+                                <a href="#" className="w-10 h-10 rounded-full bg-[#1f2937] flex items-center justify-center text-gray-400 hover:bg-[#0ea5e9] hover:text-white transition-all hover:-translate-y-1"><FaLinkedinIn /></a>
                             </div>
                         </div>
                     </div>
 
-                    {/* Contact Form & Map */}
-                    <div className="lg:col-span-2 space-y-8">
-                        <div className="bg-white p-8 rounded-xl shadow-md">
-                            <h2 className="text-2xl font-bold text-secondary mb-6 border-b pb-4">Send us a Message</h2>
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Contact Form (Middle Column) */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-[#111827] rounded-2xl p-8 md:p-10 border border-[#1f2937] shadow-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0ea5e9]/5 rounded-bl-full pointer-events-none"></div>
+                            
+                            <h3 className="text-2xl font-bold mb-6 text-white">Send us a Message</h3>
+                            
+                            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                                <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Full Name *</label>
                                         <input 
                                             type="text" 
-                                            required
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
-                                            placeholder="John Doe"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            placeholder="John Doe" 
+                                            className="w-full bg-[#1f2937] border border-[#374151] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#0ea5e9] transition-colors placeholder-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Your Email</label>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Email Address *</label>
                                         <input 
                                             type="email" 
-                                            required
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
-                                            placeholder="john@example.com"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="john@example.com" 
+                                            className="w-full bg-[#1f2937] border border-[#374151] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#0ea5e9] transition-colors placeholder-gray-500"
                                         />
                                     </div>
                                 </div>
+
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Subject *</label>
                                     <input 
                                         type="text" 
-                                        required
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
-                                        placeholder="How can we help you?"
+                                        name="subject"
+                                        value={formData.subject}
+                                        onChange={handleChange}
+                                        placeholder="How can we help you?" 
+                                        className="w-full bg-[#1f2937] border border-[#374151] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#0ea5e9] transition-colors placeholder-gray-500"
                                     />
                                 </div>
+
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Message *</label>
                                     <textarea 
                                         rows="5"
-                                        required
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all resize-none"
-                                        placeholder="Write your message here..."
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        placeholder="Write your message here..." 
+                                        className="w-full bg-[#1f2937] border border-[#374151] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#0ea5e9] transition-colors placeholder-gray-500 resize-none custom-scrollbar"
                                     ></textarea>
                                 </div>
+
                                 <button 
                                     type="submit" 
-                                    className="px-8 py-3 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all"
-                                    style={{ background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)" }}
+                                    disabled={isSubmitting}
+                                    className="px-8 py-4 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold rounded-lg transition-all shadow-[0_0_15px_rgba(14,165,233,0.3)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full md:w-auto"
                                 >
-                                    Send Message
+                                    {isSubmitting ? (
+                                        <>
+                                            <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        "Send Message"
+                                    )}
                                 </button>
                             </form>
-                        </div>
-
-                        {/* Map */}
-                        <div className="bg-white p-2 rounded-xl shadow-md h-[400px]">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.58585978135!2d79.77380327339243!3d6.921922576082982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae253d10f7a7003%3A0x320b2e4d32d3838d!2sColombo%2C%20Sri%20Lanka!5e0!3m2!1sen!2sus!4v1714571830421!5m2!1sen!2sus" 
-                                width="100%" 
-                                height="100%" 
-                                style={{ border: 0, borderRadius: '0.5rem' }} 
-                                allowFullScreen="" 
-                                loading="lazy" 
-                                referrerPolicy="no-referrer-when-downgrade"
-                            ></iframe>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Google Map Section */}
+            <div className="w-full h-[400px] border-t border-[#1f2937]">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.58638743129!2d79.77380313175317!3d6.9218335277864115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae253d10f7a7003%3A0x320b2e4d32d3838d!2sColombo!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) brightness(85%) contrast(85%)' }} 
+                    allowFullScreen="" 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="ISURU COMPUTERS Location"
+                ></iframe>
+            </div>
+
         </div>
     );
 }

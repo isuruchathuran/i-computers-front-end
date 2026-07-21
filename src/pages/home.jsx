@@ -1,8 +1,7 @@
-import { Route, Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import ProductPage from "./productPage";
-import overview from "./overview";
 import Overview from "./overview";
 import Cart from "./cart";
 import Checkout from "./checkout";
@@ -11,6 +10,8 @@ import SettingsPage from "./settings";
 import HomeContent from "./homeContent";
 import AboutContent from "./aboutContent";
 import ContactContent from "./contactContent";
+import CategoriesPage from "./categories";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export default function HomePage(){
     return(
@@ -21,14 +22,26 @@ export default function HomePage(){
                     <Route path="/" element={<HomeContent />} />
                     <Route path="/about" element={<AboutContent />} />
                     <Route path="/contact" element={<ContactContent />} />
+                    
+                    {/* Categories */}
+                    <Route path="/categories" element={<CategoriesPage />} />
+                    
                     {/* products */}
                     <Route path="/products" element={<ProductPage/>} />
-                    <Route path="/cart" element={<Cart/>} />
                     <Route path="/overview/:productId" element={<Overview/>} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/my-orders" element={<MyOrdersPage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="/*" element={<div>404 Not Found</div>} />
+                    
+                    {/* Protected Customer Routes */}
+                    <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>} />
+                    <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                    <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
+                    <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                    
+                    <Route path="/*" element={
+                        <div className="w-full h-[60vh] flex flex-col justify-center items-center text-white">
+                            <h1 className="text-6xl font-bold text-[#0ea5e9] mb-4">404</h1>
+                            <p className="text-xl text-gray-400">Page Not Found</p>
+                        </div>
+                    } />
                 </Routes>
             </div>
             <Footer />

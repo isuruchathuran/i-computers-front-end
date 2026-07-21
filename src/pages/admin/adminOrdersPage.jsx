@@ -16,8 +16,6 @@ export default function AdminOrdersPage() {
 
 
     useEffect(
-    
-        
         () => {
             if (!isLoaded) {
                 const token = localStorage.getItem("token");
@@ -32,127 +30,115 @@ export default function AdminOrdersPage() {
                         setTotalPages(response.data.totalPages);
                         setIsLoaded(true);
                     }
-                )
+                ).catch((err) => {
+                    toast.error("Failed to fetch orders");
+                    setIsLoaded(true);
+                })
             }
         }
-        ,[isLoaded]
+        ,[isLoaded, pageNumber, pageSize]
     )
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'pending': return 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20';
+            case 'processing': return 'bg-blue-500/10 text-blue-500 border border-blue-500/20';
+            case 'shipped': return 'bg-purple-500/10 text-purple-500 border border-purple-500/20';
+            case 'delivered': return 'bg-green-500/10 text-green-500 border border-green-500/20';
+            case 'cancelled': return 'bg-red-500/10 text-red-500 border border-red-500/20';
+            default: return 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
+        }
+    }
+
     return (
-        <div className="w-full h-full overflow-y-auto hide-scroll-track relative">
+        <div className="w-full h-full pb-20">
 
             {/* HEADER */}
-            <h1
-                className="w-full text-3xl font-bold mb-4 sticky top-0 text-white p-3 rounded-lg z-10"
-                style={{
-                    background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)",
-                }}
-            >
-                Orders
-                <p className="text-blue-50 mt-3 text-sm leading-6">
+            <div className="flex justify-between items-center mb-6">
+                <div>
+                <h1 className="text-3xl font-bold text-white mb-2">Orders</h1>
+                <p className="text-gray-400 text-sm">
                     View and manage all customer orders with ease.
                 </p>
-            </h1>
+                </div>
+            </div>
 
             {/* TABLE CONTAINER */}
-            <div className="overflow-x-auto rounded-xl shadow-lg border border-[var(--color-primary)] bg-white relative pb-[80px]">
+            <div className="bg-[#111827] rounded-xl border border-[#1f2937] overflow-hidden shadow-xl flex flex-col min-h-[500px] relative pb-20">
 
                 {/* LOADING */}
                 {!isLoaded ? (
-                    <div className="w-full min-h-[300px] flex justify-center items-center bg-white">
+                    <div className="w-full flex-1 flex justify-center items-center">
                         <LoadingAnimation />
                     </div>
                 ) : (
-                    <table className="min-w-full text-sm text-[var(--color-secondary)]">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full text-sm text-left">
 
-                        <thead>
-                            <tr style={{
-                                background: "linear-gradient(to right, #4facfe, #00f2fe, #a18cd1)",
-                            }}>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Order ID</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Customer Name</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Email</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Date</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Total</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Status</th>
-                                <th className="px-4 py-3 text-left text-white uppercase text-xs">Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody className="divide-y divide-[var(--color-primary)]">
-
-                            {orders.map((order) => (
-                                <tr key={order.id} className="hover:bg-[var(--color-primary)] transition">
-
-                                    <td className="px-4 py-3">{order.orderId}</td>
-
-                                    <td className="px-4 py-3">
-                                        {order.firstName} {order.lastName}
-                                    </td>
-
-                                    <td className="px-4 py-3">{order.email}</td>
-
-                                    <td className="px-4 py-3">
-                                        {getFormattedDate(order.date)}
-                                    </td>
-
-                                    <td className="px-4 py-3 font-semibold text-red-500">
-                                        {getFormattedPrice(order.total)}
-                                    </td>
-
-                                    <td className="px-4 py-3">
-                                        <span className="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                                            {order.status}
-                                        </span>
-                                    </td>
-
-                                    <td className="px-4 py-3">
-                                        <ViewOrderInfoModal order={order} />
-                                    </td>
-
+                            <thead className="bg-[#1f2937] text-gray-300 text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Order ID</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Customer</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Date</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Payment</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Total</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151]">Status</th>
+                                    <th className="px-6 py-4 font-semibold border-b border-[#374151] text-right">Actions</th>
                                 </tr>
-                            ))}
+                            </thead>
 
-                        </tbody>
+                            <tbody className="divide-y divide-[#1f2937] text-gray-300">
 
-                    </table>
+                                {orders.map((order) => (
+                                    <tr key={order.orderId} className="hover:bg-[#1f2937]/50 transition-colors">
+
+                                        <td className="px-6 py-4 font-mono text-xs">{order.orderId}</td>
+
+                                        <td className="px-6 py-4">
+                                            <p className="font-bold text-white">{order.firstName} {order.lastName}</p>
+                                            <p className="text-xs text-gray-500 mt-1">{order.email}</p>
+                                        </td>
+
+                                        <td className="px-6 py-4 text-gray-400 whitespace-nowrap">
+                                            {getFormattedDate(order.date)}
+                                        </td>
+                                        
+                                        <td className="px-6 py-4 text-gray-400 whitespace-nowrap">
+                                            {order.paymentMethod || "Cash on Delivery"}
+                                        </td>
+
+                                        <td className="px-6 py-4 font-bold text-[#0ea5e9] whitespace-nowrap">
+                                            {getFormattedPrice(order.total)}
+                                        </td>
+
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className={`px-3 py-1 text-xs rounded-full font-medium capitalize ${getStatusColor(order.status)}`}>
+                                                {order.status || 'pending'}
+                                            </span>
+                                        </td>
+
+                                        <td className="px-6 py-4 text-right">
+                                            <ViewOrderInfoModal order={order} />
+                                        </td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        
+                        {orders.length === 0 && (
+                            <div className="w-full py-12 flex flex-col items-center justify-center text-gray-500">
+                                <p>No orders found.</p>
+                            </div>
+                        )}
+                    </div>
                 )}
 
-                {/* FOOTER (PAGINATION AREA) */}
-                <div className="w-full h-[70px] flex justify-center items-center absolute bottom-0 left-0 backdrop-blur-md border-t border-white/10">
-
-                    <div className="w-[500px] h-[70px] bg-secondary shadow-xl rounded-2xl flex items-center justify-center px-4 gap-7 justify-between px-2 ">
-
-                        <button className="bg-accent w-[100px] text-white p-2 rounded-full cursor-pointer hover:bg-accent/80"
-                            onClick={() => {
-                                if (pageNumber > 1) {
-                                    setPageNumber(pageNumber - 1);
-                                    setIsLoaded(false);
-                                } else {
-                                    toast.success("You are on the First Page");
-                                }
-                            }}
-                        >
-                            Previous
-                        </button>
-
-                        <span className="text-sm text-white w-[100px] text-center">
-                            page {pageNumber} of {totalPages}
-                        </span>
-
-                        <button className="bg-accent text-white p-2 rounded-full w-[100px] cursor-pointer hover:bg-accent/80"
-                            onClick={() => {
-                                if (pageNumber < totalPages) {
-                                    setPageNumber(pageNumber + 1);
-                                    setIsLoaded(false);
-                                } else {
-                                    toast.success("You are on the Last Page");
-                                }
-                            }}
-                        >
-                            Next
-                        </button>
-
+                {/* PAGINATION */}
+                <div className="absolute bottom-0 left-0 w-full bg-[#1f2937] border-t border-[#374151] p-4 flex justify-between items-center">
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <span>Show</span>
                         <select
                             value={pageSize}
                             onChange={(e) => {
@@ -160,17 +146,45 @@ export default function AdminOrdersPage() {
                                 setPageNumber(1);   
                                 setIsLoaded(false); 
                             }}
-                            className="ml-5 border border-gray-300 rounded-full px-4 py-2 text-sm
-               bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400
-               hover:border-blue-400 transition fixed"
+                            className="bg-[#0b0f19] border border-[#374151] rounded px-2 py-1 text-white focus:outline-none focus:border-[#0ea5e9]"
                         >
-                            {/* <option value={2}>2 per page</option>
-                            <option value={5}>5 per page</option> */}
-                            <option value={10}>10 per page</option>
-                            <option value={20}>20 per page</option>
-                            <option value={50}>50 per page</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
                         </select>
+                        <span>entries</span>
+                    </div>
 
+                    <div className="flex items-center gap-4">
+                        <button 
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${pageNumber > 1 ? 'bg-[#0b0f19] text-white hover:bg-[#374151] border border-[#374151]' : 'bg-[#0b0f19] text-gray-600 border border-[#1f2937] cursor-not-allowed'}`}
+                            onClick={() => {
+                                if (pageNumber > 1) {
+                                    setPageNumber(pageNumber - 1);
+                                    setIsLoaded(false);
+                                }
+                            }}
+                            disabled={pageNumber <= 1}
+                        >
+                            Previous
+                        </button>
+
+                        <span className="text-sm text-gray-400">
+                            Page <span className="text-white font-medium">{pageNumber}</span> of <span className="text-white font-medium">{totalPages || 1}</span>
+                        </span>
+
+                        <button 
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${pageNumber < totalPages ? 'bg-[#0b0f19] text-white hover:bg-[#374151] border border-[#374151]' : 'bg-[#0b0f19] text-gray-600 border border-[#1f2937] cursor-not-allowed'}`}
+                            onClick={() => {
+                                if (pageNumber < totalPages) {
+                                    setPageNumber(pageNumber + 1);
+                                    setIsLoaded(false);
+                                }
+                            }}
+                            disabled={pageNumber >= totalPages}
+                        >
+                            Next
+                        </button>
                     </div>
 
                 </div>
